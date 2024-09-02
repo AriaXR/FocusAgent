@@ -21,7 +21,10 @@
 <td style="width:60%; border: 0; vertical-align: middle; font-size: 14px;">
 
 <p style="font-size: 16px;">
-	This is the official implementation of the paper <strong><em>“Focus Agent: LLM-Powered Virtual Focus Group”</em></strong> for IVA24. Focus Agent is a voice-based system designed to simulate focus group discussions or to guide human participants in a focus group as a moderator. We have released a web demo that simulates focus group discussions and moderates users’ focus groups using a voice-based agent.</p>
+	This is the official implementation of the paper <strong><em>“Focus Agent: LLM-Powered Virtual Focus Group”</em></strong> for IVA24. Focus Agent is a voice-based system designed to simulate focus group discussions or to guide human participants in a focus group as a moderator. This repo includes two parts of codes:  
+
+ - ⚡️ Web Demo for Focus Group Simulation  
+ - 🗣️ Online Focus Group System with AI Moderator
 
 </td>
 <td style="width:40%; border: 0; text-align: right; vertical-align: middle;">
