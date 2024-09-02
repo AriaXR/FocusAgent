@@ -31,7 +31,7 @@
 
 # Moderator
  ## Dependency
- python > 3.8  
+ python > 3.10  
  Ram > 16GB  
  GPU RAM > 8GB (For Speech to Text)  
 
