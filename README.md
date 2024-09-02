@@ -1,5 +1,16 @@
 <h1 align="center">Focus Agent</h1>
 
+<p align="center">
+  <a href="https://github.com/AriaXR/FocusAgent/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/AriaXR/FocusAgent.svg"
+             alt="GitHub license">
+  </a>
+
+  <a href="">
+        <img src="http://img.shields.io/badge/Arxiv-2303.00747-B31B1B.svg"
+             alt="ArXiv paper">
+  </a>
+
 <table style="width:100%; border-collapse: collapse; border: 0;">
 <tr style="border: none;">
 <td style="width:60%; border: 0; vertical-align: middle; font-size: 14px;">
