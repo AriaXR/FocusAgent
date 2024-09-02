@@ -7,7 +7,7 @@
   </a>
 
   <a href="">
-        <img src="http://img.shields.io/badge/Arxiv-2303.00747-B31B1B.svg"
+        <img src="http://img.shields.io/badge/"
              alt="ArXiv paper">
   </a>
 
