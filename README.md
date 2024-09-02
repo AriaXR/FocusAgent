@@ -11,6 +11,11 @@
              alt="ArXiv paper">
   </a>
 
+  <a href="https://aria.cs.kuleuven.be">
+  	<img src="https://img.shields.io/badge/Lab-Homepage-blue"
+   	     alt="Lab Homepage">
+  </a>
+
 <table style="width:100%; border-collapse: collapse; border: 0;">
 <tr style="border: none;">
 <td style="width:60%; border: 0; vertical-align: middle; font-size: 14px;">
