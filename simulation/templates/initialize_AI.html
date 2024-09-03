@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Participant Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 5px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 5px;
+    }
+
+    input[type="submit"] {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    function generateRandomInfo() {
+      var names = ["Emma", "Olivia", "Ava", "Isabella", "Sophia", "Mia", "Charlotte", "Amelia", "Harper", "Evelyn",
+        "Liam", "Noah", "William", "James", "Oliver", "Benjamin", "Elijah", "Lucas", "Mason", "Logan",
+        "Abigail", "Emily", "Elizabeth", "Ella", "Grace", "Victoria", "Natalie", "Hannah", "Scarlett", "Avery",
+        "Jackson", "Jacob", "Michael", "Alexander", "Daniel", "Henry", "Matthew", "Samuel", "David", "Joseph",
+        "Lily", "Sofia", "Chloe", "Madison", "Layla", "Penelope", "Luna", "Zoe", "Mila", "Lillian",
+        "Sebastian", "Jack", "Aiden", "Owen", "Caleb", "Wyatt", "Luke", "Gabriel", "Anthony", "Andrew"];
+      var nationalities = ["USA", "China", "India", "Brazil", "Russia", "Japan", "Germany", "Mexico", "Indonesia", "United Kingdom",
+        "France", "Italy", "Canada", "South Korea", "Australia", "Saudi Arabia", "Turkey", "Iran", "Argentina",
+        "Spain", "South Africa", "Thailand", "Egypt", "Colombia", "Netherlands", "Malaysia", "Sweden", "Belgium",
+        "United Arab Emirates", "Switzerland"];
+      var personalities = [
+        "You're a big fan of Marvel movies and you like to watch American TV series; you're a little bit shy and introverted, but you're very friendly and kind.",
+        "You're an adventurous and outgoing person who loves outdoor activities and exploring new places; you're always up for trying new things and meeting new people.",
+        "You're a creative and artistic individual who enjoys expressing yourself through various forms of art; you have a unique perspective on the world and love to inspire others.",
+        "You're a logical and analytical thinker with a passion for problem-solving; you enjoy diving deep into complex subjects and finding innovative solutions.",
+        "You're a compassionate and empathetic person who cares deeply about others; you have a strong sense of justice and always strive to make a positive impact in the world.",
+        "You're a charismatic and influential leader who knows how to motivate and inspire others; you have excellent communication skills and can easily connect with people.",
+        "You're a free-spirited and independent thinker who values personal freedom and individuality; you're not afraid to go against the norm and follow your own path.",
+        "You're a detail-oriented and organized person who thrives in structured environments; you excel at planning and executing tasks with precision and efficiency.",
+        "You're a nurturing and caring individual who loves taking care of others; you have a natural ability to create a warm and supportive atmosphere around you.",
+        "You're a curious and inquisitive person who constantly seeks knowledge and loves learning new things; you have a thirst for exploration and intellectual growth.",
+        "You're a calm and composed individual who handles stressful situations with grace and composure; you have a soothing presence that brings a sense of tranquility to others.",
+        "You're a witty and humorous person who always knows how to bring laughter and joy to any situation; you have a quick wit and a playful sense of humor.",
+        "You're a determined and resilient individual who never gives up in the face of challenges; you have a strong willpower and a relentless drive to achieve your goals.",
+        "You're a visionary and forward-thinking person who sees the bigger picture and has a clear vision for the future; you inspire others with your innovative ideas and bold ambitions.",
+        "You're a patient and understanding person who listens attentively to others and provides support and guidance; you have a calming presence that helps people feel heard and valued.",
+        "You're an adaptable and flexible individual who can easily adjust to changing circumstances and thrive in diverse environments; you have a versatile mindset and embrace new experiences.",
+        "You're a confident and self-assured person who believes in yourself and your abilities; you radiate a strong sense of self-confidence that inspires others to believe in themselves.",
+        "You're a responsible and reliable individual who can be counted on to fulfill commitments and meet deadlines; you take pride in your work and strive for excellence.",
+        "You're an optimistic and positive-minded person who always looks on the bright side of life; you have a cheerful attitude that uplifts the spirits of those around you.",
+        "You're a strategic and forward-thinking individual who excels at planning and strategizing; you have a knack for anticipating future trends and making informed decisions.",
+        "You're a sociable and outgoing person who enjoys socializing and connecting with people; you have a natural charm and easily form meaningful relationships.",
+        "You're a disciplined and focused individual who approaches tasks with dedication and determination; you have a strong work ethic and a drive for success.",
+        "You're a diplomatic and tactful person who knows how to navigate complex social situations with grace and sensitivity; you have excellent interpersonal skills.",
+        "You're a confident and persuasive communicator who can articulate ideas effectively and influence others; you have a way with words that captivates and inspires.",
+        "You're an ambitious and goal-oriented individual who sets high standards for yourself and strives for personal and professional growth; you're always seeking new challenges.",
+        "You're a patient and empathetic listener who genuinely cares about others' thoughts and feelings; you create a safe space for open and meaningful conversations.",
+        "You're a resourceful and creative problem solver who can find innovative solutions to challenges; you think outside the box and approach problems from different angles.",
+        "You're a resilient and adaptable person who bounces back from setbacks and embraces change; you have a positive attitude and embrace new opportunities.",
+        "You're an organized and efficient individual who excels at managing tasks and prioritizing responsibilities; you have a knack for multitasking and staying organized.",
+        "You're a humble and down-to-earth person who values humility and treats everyone with respect; you have a grounded perspective and appreciate the contributions of others.",
+        "You're an intuitive and empathetic person who can understand and connect with others' emotions; you have a deep sense of empathy and offer genuine support.",
+      ];
+      var occupations = [
+        "Engineer", "Teacher", "Artist", "Doctor", "Lawyer", "Programmer", "Nurse",
+        "Accountant", "Architect", "Writer", "Marketing Manager", "Sales Representative",
+        "Chef", "Graphic Designer", "Financial Analyst", "Human Resources Manager",
+        "Research Scientist", "Physical Therapist", "Photographer", "Web Developer",
+        "Data Analyst", "Project Manager", "Business Analyst", "Journalist", "Social Worker",
+        "Event Planner", "Consultant", "Dentist", "Pharmacist", "Electrician",
+     ];
+
+      var name = names[Math.floor(Math.random() * names.length)];
+      var age = Math.floor(Math.random() * (60 - 18 + 1)) + 18;
+      var nationality = nationalities[Math.floor(Math.random() * nationalities.length)];
+      var personality = personalities[Math.floor(Math.random() * personalities.length)];
+      var occupation = occupations[Math.floor(Math.random() * occupations.length)];
+
+      document.getElementById("name_{{ index }}").value = name;
+      document.getElementById("age_{{ index }}").value = age;
+      document.getElementById("nationality_{{ index }}").value = nationality;
+      document.getElementById("personality_{{ index }}").value = personality;
+      document.getElementById("occupation_{{ index }}").value = occupation;
+    }
+  </script>
+</head>
+<body>
+  <h1>Participant Information</h1>
+  <form action="/initialize_AI/{{ index }}" method="POST">
+
+    <div id="participant_{{ index }}">
+      <h3>Participant {{ index }}</h3>
+      <label for="name_{{ index }}">Name:</label>
+      <input type="text" id="name_{{ index }}" name="name" required>
+
+      <label for="age_{{ index }}">Age:</label>
+      <input type="number" id="age_{{ index }}" name="age" min="1" required>
+
+      <label for="nationality_{{ index }}">Nationality:</label>
+      <input type="text" id="nationality_{{ index }}" name="nationality" required>
+
+      <label for="personality_{{ index }}">Personality:</label>
+      <textarea id="personality_{{ index }}" name="personality" rows="4" required></textarea>
+
+      <label for="occupation_{{ index }}">Occupation:</label>
+      <input type="text" id="occupation_{{ index }}" name="occupation" required>
+
+      {% if error_message %}
+      <p class="error-message">{{ error_message }}</p>
+      {% endif %}
+    </div>
+    <input type="submit" value="Next">
+    <button type="button" onclick="generateRandomInfo()">Generate Random</button>
+  </form>
+</body>
+</html>
