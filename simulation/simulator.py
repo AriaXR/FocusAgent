@@ -5,7 +5,6 @@ import os
 import re
 import time
 from time import sleep
-from openai.error import ServiceUnavailableError,APIError
 
 from collections import Counter, defaultdict, OrderedDict
 
@@ -92,11 +91,11 @@ class ChatProcessor:
                         if matches:
                             response['choices'][0]['message']['content'] = response['choices'][0]['message']['content'].replace("<"+matches[0]+">", "").strip()
                 return response
-            except ServiceUnavailableError or APIError:
+            except openai.APIConnectionError or openai.RateLimitError or openai.OpenAIAPIError:
                 retry_count += 1
                 if retry_count > 5:
                     print('retry count > 5')
-                    raise ServiceUnavailableError
+                    raise openai.APIConnectionError
                 print('ServiceUnavailableError {} times'.format(retry_count))
 
     def generate_plan(self, messages):
@@ -105,11 +104,11 @@ class ChatProcessor:
             try:
                 response = openai.ChatCompletion.create(model = self.model, messages = messages,temperature = 0)
                 return response
-            except ServiceUnavailableError:
+            except openai.APIConnectionError or openai.RateLimitError or openai.OpenAIAPIError:
                 retry_count += 1
                 if retry_count > 5:
                     print('retry count > 5')
-                    raise ServiceUnavailableError
+                    raise openai.APIConnectionError
                 print('ServiceUnavailableError {} times'.format(retry_count))
 
     def get_plan_prompt(self, topic, purpose, output_file):

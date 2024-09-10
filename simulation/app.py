@@ -2,13 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_socketio import SocketIO
 import math
 import pdb
-from Simulator import ChatProcessor
+from simulator import ChatProcessor
 
 
 app = Flask(__name__)
 app.debug = True
 meeting_info = {}
-socketio = SocketIO(app, async_mode='eventlet')
+socketio = SocketIO(app)
 @app.template_filter('sin')
 def sin_filter(value):
     return math.sin(math.radians(value))
