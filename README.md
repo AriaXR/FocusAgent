@@ -7,7 +7,7 @@
   </a>
 
   <a href="">
-        <img src="http://img.shields.io/badge/"
+        <img src="http://img.shields.io/badge/2409.01907"
              alt="ArXiv paper">
   </a>
 
@@ -45,9 +45,7 @@ First, step into the directory
   python > 3.10  
   Install python environment  
 
-    pip install -r env.txt  
-
-     
+    pip install -r env.txt       
   
 
   ## Change the API Keys before running
