@@ -6,8 +6,8 @@
              alt="GitHub license">
   </a>
 
-  <a href="">
-        <img src="http://img.shields.io/badge/2409.01907"
+  <a href="https://arxiv.org/abs/2409.01907">
+        <img src="http://img.shields.io/badge/Arxiv-2409.01907-B31B1B.svg"
              alt="ArXiv paper">
   </a>
 
