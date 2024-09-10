@@ -36,11 +36,30 @@
 </table>
 
 # Simulation
-  ## Dependency
-  python > 3.10
+First, step into the directory  
+
+    cd simulation  
+    
+  ## Environment
+  Windows 11  
+  python > 3.10  
+  Install python environment  
+
+    pip install -r env.txt  
+
+     
+  
+
+  ## Change the API Keys before running
+  find the codes in app.py and change the parameters in   
+  
+      simulator = ChatProcessor(meeting_info, api_key='Your OpenAI API Key', organization="Your OpenAI Organization", moderator_name = 'Moderator Name', model_name = "Model Name")  
+
+      
+  change the information according to [OpenAI Webset](https://platform.openai.com/docs/concepts)
+
 
   ## run WebDemo:  
-  1. `cd simulation`  
   2. `python app.py`
 
  ## Example
