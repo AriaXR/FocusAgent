@@ -268,7 +268,7 @@ def handle_exit():
 @socketio.on('dialogue_with_user')
 def generate_dialogue_with_user():
     global meeting_info, simulator, contexts, stage_conversation, time_limitation_stage
-    simulator = ChatProcessor(meeting_info, api_key='Your OpenAI API key', organization="Your OpenAI organization", moderator_name = 'Moderator Name', model_name = "Model Name")
+    simulator = ChatProcessor(meeting_info, api_key='Your OpenAI API Key', organization="Your OpenAI Organization", moderator_name = 'Moderator Name', model_name = "Model Name")
     pre_stage = simulator.stages.pop(0).strip()
     print("now_stage:{}".format(pre_stage))
     pre_requirement = simulator.requirements.pop(0).strip()

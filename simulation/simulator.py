@@ -15,7 +15,7 @@ class ChatProcessor:
         self.moderator_name = moderator_name
         self.exit = False
         self.output_file = self.check_save_file(self.topic)
-        openai.api_key = api_key
+        # openai.api_key = api_key
         openai.organization = organization
         self.participants_systems = self.acquire_system_prompt(meeting_info['participants'])
         self.moderator_history = OrderedDict()
@@ -32,6 +32,7 @@ class ChatProcessor:
         self.participants = []
         self.register_speakers()
         self.model = model_name
+        self.client = openai.OpenAI(api_key=api_key)
         self.plan_file = 'plan/{}.txt'.format(self.topic.split(":")[0].replace(" ","_"))
         if not os.path.exists(self.plan_file):
             self.plan = self.get_plan_prompt(self.topic, self.purpose, self.plan_file)
@@ -79,17 +80,17 @@ class ChatProcessor:
         retry_count = 0
         while True:
             try:
-                response = openai.ChatCompletion.create(model = self.model, messages = messages, max_tokens = max_tokens, temperature = temperature)
-                if len(response['choices'][0]['message']['content'].split(':')) > 2:
+                response = self.client.chat.completions.create(model = self.model, messages = messages, max_tokens = max_tokens, temperature = temperature)
+                if len(response.choices[0].message.content.split(':')) > 2:
                     pattern = r"<(.*?)>"
-                    matches = re.findall(pattern, response['choices'][0]['message']['content'])
+                    matches = re.findall(pattern, response.choices[0].message.content)
                     if len(matches) > 1:
                         print('too long')
                         continue
                     else:
-                        response['choices'][0]['message']['content'] = response['choices'][0]['message']['content'].replace(":", " ")
+                        response.choices[0].message.content = response.choices[0].message.content.replace(":", " ")
                         if matches:
-                            response['choices'][0]['message']['content'] = response['choices'][0]['message']['content'].replace("<"+matches[0]+">", "").strip()
+                            response.choices[0].message.content = response.choices[0].message.content.replace("<"+matches[0]+">", "").strip()
                 return response
             except openai.APIConnectionError or openai.RateLimitError or openai.OpenAIAPIError:
                 retry_count += 1
@@ -102,7 +103,8 @@ class ChatProcessor:
         retry_count = 0
         while True:
             try:
-                response = openai.ChatCompletion.create(model = self.model, messages = messages,temperature = 0)
+                # pdb.set_trace()
+                response = self.client.chat.completions.create(model = self.model, messages = messages,temperature = 0)
                 return response
             except openai.APIConnectionError or openai.RateLimitError or openai.OpenAIAPIError:
                 retry_count += 1
@@ -120,10 +122,11 @@ class ChatProcessor:
                  "Separate into small tasks so that you can moderate with time arrangements.".format(topic, purpose, self.total_time)
         message = [{'role': 'system', 'content': prompt}]
         plan = self.generate_plan(messages = message)
+        pdb.set_trace()
         with open(output_file, "w", encoding='utf-8') as file:
-            file.write(plan['choices'][0]['message']['content'])
+            file.write(plan.choices[0].message.content)
 
-        return plan['choices'][0]['message']['content']
+        return plan.choices[0].message.content
 
     # def parse_plan(self, plan):
     #     plan_seperate = plan.split("\n\n")
@@ -147,9 +150,10 @@ class ChatProcessor:
                 continue
             tmp_plan = plan_seperate[i].split("\n")
             if ':' in tmp_plan[0]:
-                tmp_stage = tmp_plan[0].split(":")[0].strip().lower() if (tmp_plan[0].split(":")[1]=='') else tmp_plan[0].split(":")[1].strip().lower()
+                tmp_stage = tmp_plan[0].split(":")[0].strip().lower() if (tmp_plan[0].split(":")[1]=='') else (':').join(tmp_plan[0].split(":")[1:]).strip().lower()
             else:
                 tmp_stage = tmp_plan[0].strip().lower()
+
             time_arr = re.findall(r'\((.*?)\)', tmp_stage)
             tmp_stage = re.sub(r'\(.*?\)', '', tmp_stage)
             for arr in time_arr:
@@ -182,10 +186,10 @@ class ChatProcessor:
         message.extend([{'role': 'system', 'content': prompt}])
         self.moderator_history[stage] = message
         intro = self.generate_conversation(messages = message, temperature = 0.9)
-        intro = self.filter_message(intro['choices'][0]['message']['content'], 'Moderator')
+        intro = self.filter_message(intro.choices[0].message.content, 'Moderator')
         while '?' in intro:
             intro = self.generate_conversation(messages = message, temperature = 0.9)
-            intro = self.filter_message(intro['choices'][0]['message']['content'], 'Moderator')
+            intro = self.filter_message(intro.choices[0].message.content, 'Moderator')
         self.moderator_history[stage].extend([{'role': 'assistant', 'content': intro}])
         self.contexts.append(intro)
         self.conversation_history[stage] = {'Moderator': [intro]}
@@ -202,7 +206,7 @@ class ChatProcessor:
         message.extend([{'role': 'system', 'content': prompt}])
         print(message)
         summary = self.generate_conversation(messages = message, temperature = 0.9)
-        return summary['choices'][0]['message']['content']
+        return summary.choices[0].message.content
 
     def generate_conclusion(self, stage, requirement):
         message = []
@@ -220,7 +224,7 @@ class ChatProcessor:
         message.extend([{'role': 'system', 'content': prompt}])
 
         conclusion = self.generate_conversation(messages = message, temperature = 0.9, max_tokens=1000)
-        conclusion = self.filter_message(conclusion['choices'][0]['message']['content'], 'Moderator')
+        conclusion = self.filter_message(conclusion.choices[0].message.content, 'Moderator')
         self.moderator_history[stage]=[{'role': 'assistant', 'content': conclusion}]
         self.contexts.append(conclusion)
         self.conversation_history[stage]={'Moderator':[conclusion]}
@@ -237,7 +241,7 @@ class ChatProcessor:
         prompt = "You're a moderator of a focus group. Conversations are what the participants talked before in this stage. The stage is continue and they had nothing more to say. As a moderator, you need to prompt them according to the convesations before to help them share more insight in this stage. And now the stage is {}. Do not ask the questions similar to the previous questions. No more than 50 words. Do not mention the participants name. One question each time.".format(stage)
         message.extend([{'role': 'system', 'content': prompt}])
         question = self.generate_conversation(messages = message, temperature = 0.9)
-        question = self.filter_message(question['choices'][0]['message']['content'], 'Moderator')
+        question = self.filter_message(question.choices[0].message.content, 'Moderator')
         self.moderator_history[stage].extend([{'role': 'assistant', 'content': question}])
         self.contexts.append(question)
         self.conversation_history[stage]['Moderator'].append(question)
@@ -256,7 +260,7 @@ class ChatProcessor:
         message.extend([{'role': 'system', 'content': prompt}])
         self.moderator_history[stage].extend([{'role': 'system', 'content': prompt}])
         question = self.generate_conversation(messages = message, temperature = 0.9)
-        question = self.filter_message(question['choices'][0]['message']['content'], 'Moderator')
+        question = self.filter_message(question.choices[0].message.content, 'Moderator')
         self.moderator_history[stage].extend([{'role': 'assistant', 'content': question}])
         self.contexts.append(question)
         self.conversation_history[stage]['Moderator'].append(question)
@@ -328,7 +332,7 @@ class ChatProcessor:
         message.extend([{'role': 'system', 'content': prompt}])
         self.moderator_history[cur_stage] = message
         question = self.generate_conversation(messages = message, temperature = 0)
-        question = self.filter_message(question['choices'][0]['message']['content'], 'Moderator')
+        question = self.filter_message(question.choices[0].message.content, 'Moderator')
         self.moderator_history[cur_stage].extend([{'role': 'assistant', 'content': question}])
         self.contexts.append(question)
         self.conversation_history[cur_stage] = defaultdict(list)
@@ -411,7 +415,7 @@ class ChatProcessor:
     def generate_reply(self, speaker, stage, pre_contexts):
         history = self.get_participant_message(speaker, stage, pre_contexts)
         response = self.generate_conversation(messages = history, temperature = 0.9)
-        response = self.filter_message(response['choices'][0]['message']['content'], speaker)
+        response = self.filter_message(response.choices[0].message.content, speaker)
         self.conversation_history[stage][speaker].append(response)
         self.speaker_order[stage].append(speaker)
         self.contexts.append(response)
@@ -440,7 +444,7 @@ class ChatProcessor:
                  "Do nothing else.".format(self.participants_systems[speaker], context[:-1], context[-1])
         message = [{'role': 'system', 'content': prompt}]
         response = self.generate_conversation(messages = message, max_tokens = 10, temperature = 0)
-        response = response['choices'][0]['message']['content']
+        response = response.choices[0].message.content
         # print(speaker,response)
         # pdb.set_trace()
         score = self.find_integers(response)[0]
@@ -522,7 +526,7 @@ class ChatProcessor:
         for _,v in self.moderator_history.items():
             messages.extend(v)
         answer = self.generate_conversation(messages=messages, temperature=0)
-        answer = self.filter_message(answer['choices'][0]['message']['content'], 'Moderator')
+        answer = self.filter_message(answer.choices[0].message.content, 'Moderator')
         self.moderator_history['QA'].append({"role" : "assistant", "content" : answer})
         self.write_to_file(answer)
         return answer
@@ -541,7 +545,7 @@ class ChatProcessor:
     def generate_reply_for_user(self, speaker, stage, pre_contexts):
         history = self.get_participant_message(speaker, stage, pre_contexts)
         response = self.generate_conversation(messages = history, temperature = 0.9)
-        response = self.filter_message(response['choices'][0]['message']['content'], speaker)
+        response = self.filter_message(response.choices[0].message.content, speaker)
         return response
 
 
