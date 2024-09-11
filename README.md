@@ -39,9 +39,7 @@
 First, step into the directory  
 
     cd simulation  
-
     mkdir plan
-
     mkdir transcripts
     
   ## Environment
@@ -70,10 +68,18 @@ First, step into the directory
 
 
 # Moderator
+Step into the dir:  
+
+    cd ModeratorAgent
+  
  ## Dependency
  python > 3.10  
  Ram > 16GB  
- GPU RAM > 8GB (For Speech to Text)  
+ GPU RAM > 8GB (For Speech to Text) 
+ Virtual audio cable like [VB-Audio Virtual Cable](https://vb-audio.com/Cable/#DownloadCable)
+ Install python environments
+
+   pip install -r env.txt
 
 ## Speech to Text
 
@@ -81,17 +87,36 @@ First, step into the directory
 
 This S2T system is based on [Whsper-X](https://github.com/m-bain/whisperX/blob/main).
 
+## Change the API Keys before running
+
+Find the codes in sender.py and change the parameters from  
+
+    app = AIAvatar(
+    openai_api_key='Your OpenAI API key',
+    google_api_key='You Google API key',
+    topic = 'Your topic',
+    purpose="Your Purpose",
+    total_time = 60, # <- Set to adjust total discussion time
+    participants = ["A", "B"], #participants names
+    volume_threshold=200,    # <- Set to adjust microphone sensitivity
+    lang_TTS = 'en-US', # <- Set to adjust TTS language
+    input_device= 'cable-B',
+    output_device= 'cable-A',
+    save_audio_path='Your save audio path',
+    orgnization_key='org-WYPMYMdADrrxWFlo7jHFLftZ',
+    )
+
 
  ## run 
  ```
-
+python sender.py
  ```
 
  ## Example
  
 <img src="image/FocusAgent.png" alt="Simulation" width="500">
 	
-This original work is based on Mozilla Hub, which ended its support this year. It can easily be transferred to any other online meeting platform by monitoring the microphone and headphones through the system and changing the input from codes.
+This original work is based on Mozilla Hub, which ended its support this year. It can easily be transferred to any other online meeting platform by monitoring the microphone and headphones through the system and changing the input. What you need to do is to set up the virtual audio cable to make them monitor the meeting correctly.
 
  # Contact and Support 
 
