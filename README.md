@@ -70,7 +70,7 @@ First, step into the directory
 # Moderator
 Step into the dir:  
 
-    cd ModeratorAgent
+    cd AgentinMozilla
   
  ## Dependency
  python > 3.10  
