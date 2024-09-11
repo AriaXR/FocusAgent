@@ -39,6 +39,10 @@
 First, step into the directory  
 
     cd simulation  
+
+    mkdir plan
+
+    mkdir transcripts
     
   ## Environment
   Windows 11  
