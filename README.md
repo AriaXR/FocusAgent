@@ -103,7 +103,7 @@ Find the codes in sender.py and change the parameters from
     input_device= 'cable-B',
     output_device= 'cable-A',
     save_audio_path='Your save audio path',
-    orgnization_key='org-WYPMYMdADrrxWFlo7jHFLftZ',
+    orgnization_key='Your org',
     )
 
 
